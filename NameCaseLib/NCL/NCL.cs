@@ -6,5 +6,7 @@ namespace NameCaseLib.NCL
 {
     class NCL
     {
+
+
     }
 }
