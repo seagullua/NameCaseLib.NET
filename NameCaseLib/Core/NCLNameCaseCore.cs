@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NameCaseLib.NCL
+namespace NameCaseLib.Core
 {
     class NCLNameCaseCore
     {

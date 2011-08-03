@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using NameCaseLib.NCL.Enums;
+using NameCaseLib.NCL;
 
-namespace NameCaseLib.NCL
+namespace NameCaseLib.Core
 {
     /// <summary>
     /// NCLNameCaseWord - класс, который служит для хранения всей информации о каждом слове
     /// </summary>
-    private class NCLNameCaseWord
+    class NCLNameCaseWord
     {
         /// <summary>
         /// Слово в нижнем регистре, которое хранится в об’єкте класса
@@ -48,7 +48,7 @@ namespace NameCaseLib.NCL
         /// <summary>
         /// Массив содержит все падежи слова, полученые после склонения текущего слова
         /// </summary>
-        private String[] NameCases;
+        private String[] nameCases;
 
         /// <summary>
         /// Номер правила, по которому было произведено склонение текущего слова
@@ -62,7 +62,7 @@ namespace NameCaseLib.NCL
         public NCLNameCaseWord(String word)
         {
             generateMask(word);
-            word = word.ToLower();
+            this.word = word.ToLower();
         }
 
         /// <summary>
@@ -90,6 +90,56 @@ namespace NameCaseLib.NCL
                     letterMask[i] = LettersMask.X;
                 }
             }
+        }
+
+        /// <summary>
+        /// Считывает или устанавливает все падежи
+        /// </summary>
+        public String[] NameCases
+        {
+            set { nameCases = value; }
+            get
+            {
+                return nameCases;
+            }
+        }
+
+        /// <summary>
+        /// Расчитывает и возвращает пол текущего слова. Или устанавливает нужный пол.
+        /// </summary>
+        public Gender Gender
+        {
+            get
+            {
+                if (genderSolved == Gender.Null)
+                {
+                    if (manOrWoman.Man > manOrWoman.Woman)
+                    {
+                        genderSolved = Gender.Man;
+                    }
+                    else
+                    {
+                        genderSolved = Gender.Woman;
+                    }
+                }
+                return genderSolved;
+            }
+            set
+            {
+                genderSolved = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Возвращает строку с нужным падежом текущего слова
+        /// </summary>
+        /// <param name="pageg">нужный падеж</param>
+        /// <returns>строка с нужным падежом текущего слова</returns>
+        public String getNameCase(Padeg pageg)
+        {
+            return nameCases[(int)pageg];
         }
 
         /// <summary>

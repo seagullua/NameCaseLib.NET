@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NameCaseLib.NCL
@@ -35,11 +34,12 @@ namespace NameCaseLib.NCL
             }
         }
 
-        public GenderProbability operator+(GenderProbability add)
+        static public GenderProbability operator+(GenderProbability number, GenderProbability add)
         {
-            this.Man += add.Man;
-            this.Woman += add.Woman;
-            return this;
+            GenderProbability result = new GenderProbability();
+            result.Man = number.Man + add.Man;
+            result.Woman = number.Woman + add.Woman;
+            return number;
         }
     }
 }
