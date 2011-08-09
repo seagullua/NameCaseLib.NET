@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using NameCaseLib.NCL;
+using System;
 namespace NameCaseLib.Core
 {
     class WordArray
@@ -16,12 +14,12 @@ namespace NameCaseLib.Core
             words = new Word[capacity];
         }
 
-        public Word getWord(int id)
+        public Word GetWord(int id)
         {
             return words[id];
         }
 
-        private void enlargeArray()
+        private void EnlargeArray()
         {
             Word[] tmp = new Word[capacity * 2];
             Array.Copy(words, tmp, length);
@@ -29,11 +27,11 @@ namespace NameCaseLib.Core
             capacity *= 2;
         }
 
-        public void addWord(Word word)
+        public void AddWord(Word word)
         {
             if (length >= capacity)
             {
-                enlargeArray();
+                EnlargeArray();
             }
             words[length] = word;
             length++;
@@ -45,6 +43,18 @@ namespace NameCaseLib.Core
             {
                 return length;
             }
+        }
+
+        public Word GetByNamePart(NamePart namePart)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                if (words[i].NamePart == namePart)
+                {
+                    return words[i];
+                }
+            }
+            return new Word("");
         }
     }
 }

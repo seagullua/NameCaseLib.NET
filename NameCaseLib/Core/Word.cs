@@ -174,7 +174,7 @@ namespace NameCaseLib.Core
         /// </summary>
         /// <param name="pageg">нужный падеж</param>
         /// <returns>строка с нужным падежом текущего слова</returns>
-        public String getNameCase(Padeg pageg)
+        public String GetNameCase(Padeg pageg)
         {
             return nameCases[(int)pageg];
         }

@@ -4,7 +4,7 @@ namespace NameCaseLib.Core
 {
     /// <summary>
     /// Класс содержит функции для работы со строками, которые используются в NCLNameCaseLib
-    /// @author Андрей Чайка <bymer3@gmail.com>
+    /// @author Андрей Чайка bymer3@gmail.com
     /// @version 0.0.1
     /// </summary>
     static class Str
