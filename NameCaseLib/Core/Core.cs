@@ -6,7 +6,7 @@ namespace NameCaseLib.Core
     /// Набор основных функций, который позволяют сделать интерфейс слонения русского и украниского языка
     /// абсолютно одинаковым. Содержит все функции для внешнего взаимодействия с библиотекой.
     /// </summary>
-    abstract class Core
+    public abstract class Core
     {
         /// <summary>
         /// Версия библиотеки
@@ -105,12 +105,9 @@ namespace NameCaseLib.Core
         /// <summary>
         /// Считывает и устанавливает последние правило
         /// </summary>
-        protected int Rule
+        protected int GetRule()
         {
-            get
-            {
-                return lastRule;
-            }
+            return lastRule;
         }
 
         /// <summary>
@@ -546,6 +543,10 @@ namespace NameCaseLib.Core
             }
         }
 
+        /// <summary>
+        /// Метод в разработке
+        /// </summary>
+        /// <returns></returns>
         public String GetFullNameFormat___DEV()
         {
             return "";

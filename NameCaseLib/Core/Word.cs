@@ -6,7 +6,7 @@ namespace NameCaseLib.Core
     /// <summary>
     /// Word - класс, который служит для хранения всей информации о каждом слове
     /// </summary>
-    class Word
+    public class Word
     {
         /// <summary>
         /// Слово в нижнем регистре, которое хранится в об’єкте класса
