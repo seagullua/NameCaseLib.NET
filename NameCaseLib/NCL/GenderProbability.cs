@@ -67,10 +67,10 @@ namespace NameCaseLib.NCL
         /// <returns>Сумма вероятностей</returns>
         static public GenderProbability operator+(GenderProbability number, GenderProbability add)
         {
-            GenderProbability result = new GenderProbability();
+            GenderProbability result = new GenderProbability(0, 0);
             result.Man = number.Man + add.Man;
             result.Woman = number.Woman + add.Woman;
-            return number;
+            return result;
         }
     }
 }

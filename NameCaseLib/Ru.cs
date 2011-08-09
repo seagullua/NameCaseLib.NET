@@ -14,12 +14,12 @@ namespace NameCaseLib
         /// <summary>
         /// Версия языкового файла
         /// </summary>
-        new protected static String languageBuild = "11072716";
+        protected new static String languageBuild = "11072716";
 
         /// <summary>
         /// Количество падежей в языке
         /// </summary>
-        new protected int caseCount = 6;
+        protected new int caseCount = 6;
 
         /// <summary>
         /// Список гласных русского языка
@@ -41,6 +41,14 @@ namespace NameCaseLib
         /// </summary>
         private String[] ih = new String[] {"их", "ых", "ко"};
         
+        /// <summary>
+        /// Создание текущего объекта
+        /// </summary>
+        public Ru()
+        {
+            base.caseCount = this.caseCount;
+        }
+
         private Dictionary<String, String> splitSecondExclude = new Dictionary<String, String>()
         {
             {"а", "взйкмнпрстфя"},
@@ -455,7 +463,7 @@ namespace NameCaseLib
         /// Функция пытается применить цепочку правил для мужских имен
         /// @return boolean true - если было использовано правило из списка, false - если правило не было найденым
         /// </summary>
-        new protected bool ManFirstName()
+        protected override bool ManFirstName()
         {
             return RulesChain(Gender.Man, new int[]{1, 2, 3});
         }
@@ -464,7 +472,7 @@ namespace NameCaseLib
         /// Функция пытается применить цепочку правил для женских имен
         /// @return boolean true - если было использовано правило из списка, false - если правило не было найденым
         /// </summary>
-        new protected bool WomanFirstName()
+        protected override bool WomanFirstName()
         {
             return RulesChain(Gender.Woman, new int[]{1, 2, 3});
         }
@@ -473,7 +481,7 @@ namespace NameCaseLib
         /// Функция пытается применить цепочку правил для мужских фамилий
         /// @return boolean true - если было использовано правило из списка, false - если правило не было найденым
         /// </summary>
-        new protected bool ManSecondName()
+        protected override bool ManSecondName()
         {
             return RulesChain(Gender.Man,  new int[]{8, 4, 5, 6, 7});
         }
@@ -482,7 +490,7 @@ namespace NameCaseLib
         /// Функция пытается применить цепочку правил для женских фамилий
         /// @return boolean true - если было использовано правило из списка, false - если правило не было найденым
         /// </summary>
-        new protected bool WomanSecondName()
+        protected override bool WomanSecondName()
         {
             return RulesChain(Gender.Woman,  new int[]{4});
         }
@@ -491,7 +499,7 @@ namespace NameCaseLib
         /// Функция склоняет мужский отчества
         /// @return boolean true - если слово было успешно изменено, false - если не получилось этого сделать
         /// </summary>
-        new protected bool ManFatherName()
+        protected override bool ManFatherName()
         {
             //Проверяем действительно ли отчество
             if (InNames(workingWord, "Ильич"))
@@ -511,7 +519,7 @@ namespace NameCaseLib
         /// Функция склоняет женские отчества
         /// @return boolean true - если слово было успешно изменено, false - если не получилось этого сделать
         /// </summary>
-        new protected bool WomanFatherName()
+        protected override bool WomanFatherName()
         {
             //Проверяем действительно ли отчество
             if (Last(2) == "на")
@@ -527,7 +535,7 @@ namespace NameCaseLib
         /// Определение пола по правилам имен
         /// @param NCLNameCaseWord word обьект класса слов, для которого нужно определить пол
         /// </summary>
-        new protected void GenderByFirstName(Word word)
+        protected override void GenderByFirstName(Word word)
         {
             SetWorkingWord(word.Name);
 
@@ -594,7 +602,7 @@ namespace NameCaseLib
         /// Определение пола по правилам фамилий
         /// @param NCLNameCaseWord word обьект класса слов, для которого нужно определить пол
         /// </summary>
-        new protected void GenderBySecondName(Word word)
+        protected override void GenderBySecondName(Word word)
         {
             SetWorkingWord(word.Name);
 
@@ -622,7 +630,7 @@ namespace NameCaseLib
         /// Определение пола по правилам отчеств
         /// @param NCLNameCaseWord word обьект класса слов, для которого нужно определить пол
         /// </summary>
-        new protected void GenderByFatherName(Word word)
+        protected override void GenderByFatherName(Word word)
         {
             SetWorkingWord(word.Name);
 
@@ -644,7 +652,7 @@ namespace NameCaseLib
         /// - <b>F</b> - отчество
         /// @param NCLNameCaseWord word обьект класса слов, который необходимо идентифицировать
         /// </summary>
-        new protected void DetectNamePart(Word word)
+        protected override void DetectNamePart(Word word)
         {
             String name = word.Name;
             int length = name.Length;
@@ -667,14 +675,14 @@ namespace NameCaseLib
             }
 
             
-            /// буквы на которые никогда не закнчиваются имена
+            // буквы на которые никогда не закнчиваются имена
             if (In(Last(1), "еёжхцочшщъыэю"))
             {
                 second += 0.3f;
             }
 
             
-            /// Используем массив характерных окончаний
+            // Используем массив характерных окончаний
             if (In(Last(2, 1), vowels+consonant))
             {
                 if (!In(Last(1), splitSecondExclude[Last(2, 1)]))
@@ -684,48 +692,48 @@ namespace NameCaseLib
             }
 
             
-            /// Сохкращенные ласкательные имена типя Аня Галя и.т.д.
+            // Сохкращенные ласкательные имена типя Аня Галя и.т.д.
             if (Last(1) == "я" && In(Last(3, 1), vowels))
             {
                 first += 0.5f;
             }
 
             
-            /// Не бывает имет с такими предпоследними буквами
+            // Не бывает имет с такими предпоследними буквами
             if (In(Last(2, 1), "жчщъэю"))
             {
                 second += 0.3f;
             }
 
             
-            /// Слова на мягкий знак. Существует очень мало имен на мягкий знак. Все остальное фамилии
+            // Слова на мягкий знак. Существует очень мало имен на мягкий знак. Все остальное фамилии
             if (Last(1) == "ь")
             {
                 
-                /// Имена типа нинЕЛь адЕЛь асЕЛь
+                // Имена типа нинЕЛь адЕЛь асЕЛь
                 if (Last(3, 2) == "ел")
                 {
                     first += 0.7f;
                 }
                 
-                /// Просто исключения
+                // Просто исключения
                 else if (InNames(name, new String [] {"Лазарь", "Игорь", "Любовь"}))
                 {
                     first += 10;
                 }
                 
-                /// Если не то и не другое, тогда фамилия
+                // Если не то и не другое, тогда фамилия
                 else
                 {
                     second += 0.3f;
                 }
             }
             
-            /// Если две последних букв согласные то скорее всего это фамилия
+            // Если две последних букв согласные то скорее всего это фамилия
             else if (In(Last(1), consonant + "ь") && In(Last(2, 1), consonant + "ь"))
             {
                 
-                /// Практически все кроме тех которые оканчиваются на следующие буквы
+                // Практически все кроме тех которые оканчиваются на следующие буквы
                 if (!In(Last(2), new String [] {"др", "кт", "лл", "пп", "рд", "рк", "рп", "рт", "тр"}))
                 {
                     second += 0.25f;
@@ -733,7 +741,7 @@ namespace NameCaseLib
             }
 
             
-            /// Слова, которые заканчиваются на тин
+            // Слова, которые заканчиваются на тин
             if (Last(3) == "тин" && In(Last(4, 1), "нст"))
             {
                 first += 0.5f;
@@ -748,21 +756,21 @@ namespace NameCaseLib
 
 
             
-            /// Фамилии которые заканчиваются на -ли кроме тех что типа натАли и.т.д.
+            // Фамилии которые заканчиваются на -ли кроме тех что типа натАли и.т.д.
             if (Last(2) == "ли" && Last(3, 1) != "а")
             {
                 second+=0.4f;
             }
 
             
-            /// Фамилии на -як кроме тех что типа Касьян Куприян + Ян и.т.д.
+            // Фамилии на -як кроме тех что типа Касьян Куприян + Ян и.т.д.
             if (Last(2) == "ян" && length > 2 && !In(Last(3, 1), "ьи"))
             {
                 second+=0.4f;
             }
 
             
-            /// Фамилии на -ур кроме имен Артур Тимур
+            // Фамилии на -ур кроме имен Артур Тимур
             if (Last(2) == "ур")
             {
                 if (!InNames(name, new String [] {"Артур", "Тимур"}))
@@ -772,11 +780,11 @@ namespace NameCaseLib
             }
 
             
-            /// Разбор ласкательных имен на -ик
+            // Разбор ласкательных имен на -ик
             if (Last(2) == "ик")
             {
                 
-                /// Ласкательные буквы перед ик
+                // Ласкательные буквы перед ик
                 if (In(Last(3, 1), "лшхд"))
                 {
                     first += 0.3f;
@@ -788,23 +796,23 @@ namespace NameCaseLib
             }
 
             
-            /// Разбор имен и фамилий, который заканчиваются на ина
+            // Разбор имен и фамилий, который заканчиваются на ина
             if (Last(3) == "ина")
             {
                 
-                /// Все похожие на Катерина и Кристина
+                // Все похожие на Катерина и Кристина
                 if (In(Last(7), new String [] {"атерина", "ристина"}))
                 {
                     first+=10;
                 }
                 
-                /// Исключения
+                // Исключения
                 else if (InNames(name, new String [] {"Мальвина", "Антонина", "Альбина", "Агриппина", "Фаина", "Карина", "Марина", "Валентина", "Калина", "Аделина", "Алина", "Ангелина", "Галина", "Каролина", "Павлина", "Полина", "Элина", "Мина", "Нина"}))
                 {
                     first+=10;
                 }
                 
-                /// Иначе фамилия
+                // Иначе фамилия
                 else
                 {
                     second += 0.4f;
@@ -812,14 +820,14 @@ namespace NameCaseLib
             }
 
             
-            /// Имена типа Николай
+            // Имена типа Николай
             if (Last(4) == "олай")
             {
                 first += 0.6f;
             }
 
             
-            /// Фамильные окончания
+            // Фамильные окончания
             if (In(Last(2), new String [] {"ов", "ин", "ев", "ёв", "ый", "ын", "ой", "ук", "як", "ца", "ун", "ок", "ая", "га", "ёк", "ив", "ус", "ак", "яр", "уз", "ах", "ай"}))
             {
                 second+=0.4f;

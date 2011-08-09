@@ -172,11 +172,11 @@ namespace NameCaseLib.Core
         /// <summary>
         /// Возвращает строку с нужным падежом текущего слова
         /// </summary>
-        /// <param name="pageg">нужный падеж</param>
+        /// <param name="padeg">нужный падеж</param>
         /// <returns>строка с нужным падежом текущего слова</returns>
-        public String GetNameCase(Padeg pageg)
+        public String GetNameCase(Padeg padeg)
         {
-            return nameCases[(int)pageg];
+            return nameCases[(int)padeg];
         }
 
         /// <summary>

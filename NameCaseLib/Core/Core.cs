@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using NameCaseLib.NCL;
 namespace NameCaseLib.Core
 {
@@ -16,7 +17,7 @@ namespace NameCaseLib.Core
         /// <summary>
         /// Версия языкового файла
         /// </summary>
-        protected static String languageBuild = "";
+        protected static String languageBuild;
 
         /// <summary>
         /// Готовность системы:
@@ -61,7 +62,7 @@ namespace NameCaseLib.Core
         /// <summary>
         /// Количество падежей в языке
         /// </summary>
-        protected int caseCount = 0;
+        protected int caseCount;
 
         /// <summary>
         /// Метод очищает результаты последнего склонения слова. Нужен при склонении нескольких слов.
@@ -143,7 +144,15 @@ namespace NameCaseLib.Core
             String result = workindLastCache.Get(length, length);
             if (result == "")
             {
-                result = workingWord.Substring(workingWord.Length - length, length);
+                int startIndex = workingWord.Length - length;
+                if (startIndex >= 0)
+                {
+                    result = workingWord.Substring(workingWord.Length - length, length);
+                }
+                else
+                {
+                    result = workingWord;  
+                }
                 workindLastCache.Push(result, length, length);
             }
             return result;
@@ -160,7 +169,15 @@ namespace NameCaseLib.Core
             String result = workindLastCache.Get(length, stopAfter);
             if (result == "")
             {
-                result = workingWord.Substring(workingWord.Length - length, stopAfter);
+                int startIndex = workingWord.Length - length;
+                if (startIndex >= 0)
+                {
+                    result = workingWord.Substring(workingWord.Length - length, stopAfter);
+                }
+                else
+                {
+                    result = workingWord;
+                }
                 workindLastCache.Push(result, length, stopAfter);
             }
             return result;
@@ -182,7 +199,7 @@ namespace NameCaseLib.Core
                 for (int i = 0; i < rulesLength; i++)
                 {
                     String methodName = String.Format("{0}Rule{1}", rulesName, rulesArray[i]);
-                    bool res = (bool)classType.InvokeMember(methodName, System.Reflection.BindingFlags.InvokeMethod, null, this, null);
+                    bool res = (bool)classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance).Invoke(this, null);
                     if (res)
                     {
                         return true;
@@ -272,7 +289,7 @@ namespace NameCaseLib.Core
         protected void WordForms(String word, String[] endings, int replaceLast)
         {
             //Сохраняем именительный падеж
-            String[] lastResult = new String[caseCount];
+            lastResult = new String[caseCount];
             lastResult[0] = workingWord;
 
             //убираем лишние буквы
@@ -407,14 +424,6 @@ namespace NameCaseLib.Core
         }
 
 
-        /// <summary>
-        /// Склонение имени по правилам мужских имен
-        /// </summary>
-        /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
-        protected bool ManFirstName()
-        {
-            return false;
-        }
 
         /// <summary>
         /// Идентификирует нужное слово
@@ -474,7 +483,7 @@ namespace NameCaseLib.Core
             }
 
             //Если нет тогда определяем у каждого слова и потом сумируем
-            GenderProbability probability = new GenderProbability();
+            GenderProbability probability = new GenderProbability(0, 0);
 
             for (int i = 0; i < length; i++)
             {
@@ -556,7 +565,7 @@ namespace NameCaseLib.Core
         /// Склоняет слово по нужным правилам
         /// </summary>
         /// <param name="word">Слово</param>
-        private void WordCase(Word word)
+        protected void WordCase(Word word)
         {
             Gender gender = word.Gender;
             String genderName = (gender == Gender.Man ? "Man" : "Woman");
@@ -572,7 +581,7 @@ namespace NameCaseLib.Core
             String methodName = genderName + namePartName + "Name";
             SetWorkingWord(word.Name);
 
-            bool res = (bool)this.GetType().InvokeMember(methodName, System.Reflection.BindingFlags.InvokeMethod, null, this, null);
+            bool res = (bool)this.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance).Invoke(this, null);
             if (res)
             {
                 word.NameCases = lastResult;
@@ -938,84 +947,67 @@ namespace NameCaseLib.Core
             return words;
         }
 
+
+        /// <summary>
+        /// Склонение имени по правилам мужских имен
+        /// </summary>
+        /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
+        abstract protected bool ManFirstName();
+
         /// <summary>
         /// Склонение имени по правилам женских имен
         /// </summary>
         /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
-        protected bool WomanFirstName()
-        {
-            return false;
-        }
+        abstract protected bool WomanFirstName();
 
         /// <summary>
         /// Склонение фамилию по правилам мужских имен
         /// </summary>
         /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
-        protected bool ManSecondName()
-        {
-            return false;
-        }
+        abstract protected bool ManSecondName();
 
         /// <summary>
         /// Склонение фамилию по правилам женских имен
         /// </summary>
         /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
-        protected bool WomanSecondName()
-        {
-            return false;
-        }
+        abstract protected bool WomanSecondName();
 
         /// <summary>
         /// Склонение отчества по правилам мужских имен
         /// </summary>
         /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
-        protected bool ManFatherName()
-        {
-            return false;
-        }
+        abstract protected bool ManFatherName();
 
         /// <summary>
         /// Склонение отчества по правилам женских имен
         /// </summary>
         /// <returns>true если склонение было произведено и false если правило не было найденым</returns>
-        protected bool WomanFatherName()
-        {
-            return false;
-        }
+        abstract protected bool WomanFatherName();
 
         /// <summary>
         /// Определяет пол человека по его имени
         /// </summary>
         /// <param name="word">Имя</param>
-        protected void GenderByFirstName(Word word)
-        {
-        }
+        abstract protected void GenderByFirstName(Word word);
 
 
         /// <summary>
         /// Определяет пол человека по его фамилии
         /// </summary>
         /// <param name="word">Фамилия</param>
-        protected void GenderBySecondName(Word word)
-        {
-        }
+        abstract protected void GenderBySecondName(Word word);
 
         /// <summary>
         /// Определяет пол человека по его отчеству
         /// </summary>
         /// <param name="word">Отчество</param>
-        protected void GenderByFatherName(Word word)
-        {
-        }
+        abstract protected void GenderByFatherName(Word word);
 
         /// <summary>
         /// Идетифицирует слово определяе имя это, или фамилия, или отчество 
         /// </summary>
         /// <param name="word">Слово для которое нужно идетифицировать</param>
-        protected void DetectNamePart(Word word)
-        {
-        }
-        
+        abstract protected void DetectNamePart(Word word);  
         
         
         /// <summary>
