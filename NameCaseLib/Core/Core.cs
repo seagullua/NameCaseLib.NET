@@ -264,9 +264,12 @@ namespace NameCaseLib.Core
         /// <returns>true если входит в список и false если не входит</returns>
         protected bool In(String needle, String letters)
         {
-            if (letters.IndexOf(needle) >= 0)
+            if (needle != "")
             {
-                return true;
+                if (letters.IndexOf(needle) >= 0)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -280,11 +283,14 @@ namespace NameCaseLib.Core
         protected bool In(String needle, String[] haystack)
         {
             int length = haystack.Length;
-            for (int i = 0; i < length; i++)
+            if (needle != "")
             {
-                if (haystack[i] == needle)
+                for (int i = 0; i < length; i++)
                 {
-                    return true;
+                    if (haystack[i] == needle)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -339,9 +345,15 @@ namespace NameCaseLib.Core
             lastResult = new String[caseCount];
             lastResult[0] = workingWord;
 
-            //убираем лишние буквы
-            word = word.Substring(0, word.Length - replaceLast);
-
+            if (word.Length >= replaceLast)
+            {
+                //убираем лишние буквы
+                word = word.Substring(0, word.Length - replaceLast);
+            }
+            else
+            {
+                word = "";
+            }
             //Приписуем окончания
             for (int i = 1; i < caseCount; i++)
             {

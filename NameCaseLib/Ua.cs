@@ -121,9 +121,9 @@ namespace NameCaseLib
             String osnova = word;
             String stack = "";
             //Ріжемо слово поки не зустрінемо приголосний і записуемо в стек всі голосні які зустріли
-            while (osnova.Length > 0 && In(osnova.Substring(osnova.Length - 1, 1), vowels + "ь"))
+            while (In(Last(osnova, 1), vowels + "ь"))
             {
-                stack = osnova.Substring(osnova.Length - 1, 1) + stack;
+                stack = Last(osnova, 1) + stack;
                 osnova = osnova.Substring(0, osnova.Length - 1);
             }
             int stacksize = stack.Length;
@@ -133,7 +133,7 @@ namespace NameCaseLib
                 last = stack.Substring(0, 1);
             }
 
-            String osnovaEnd = osnova.Substring(osnova.Length - 1, 1);
+            String osnovaEnd = Last(osnova, 1);
             if (In(osnovaEnd, neshyplyachi) && !In(last, myaki))
             {
                 return 1;
@@ -177,7 +177,7 @@ namespace NameCaseLib
         {
             String osnova = word;
             //Ріжемо слово поки не зустрінемо приголосний
-            while (osnova.Length > 0 && In(osnova.Substring(osnova.Length - 1, 1), vowels + "ь"))
+            while (In(Last(osnova, 1), vowels + "ь"))
             {
                 osnova = osnova.Substring(0, osnova.Length - 1);
             }
@@ -283,7 +283,7 @@ namespace NameCaseLib
 
 
                 //Випадання букви е при відмінюванні слів типу Орел
-                if (osnova.Substring(0, 1) == "о" && FirstLastVowel(osnova, vowels + "гк") == "е" && Last(2) != "сь")
+                if (osnova != "" && osnova.Substring(0, 1) == "о" && FirstLastVowel(osnova, vowels + "гк") == "е" && Last(2) != "сь")
                 {
                     int delim = osnova.LastIndexOf("е");
                     osnova = osnova.Substring(0, delim) + osnova.Substring(delim + 1, osnova.Length - delim);
