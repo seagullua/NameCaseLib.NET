@@ -121,15 +121,15 @@ namespace NameCaseLib
         {
             if (In(Last(1), consonant))
             {
-                if (InNames(workingWord, "Павел"))
+                if (InNames(workingWord, "павел"))
                 {
-                    lastResult = new String [] {"Павел", "Павла", "Павлу", "Павла", "Павлом", "Павле"};
+                    lastResult = new String [] {"павел", "павла", "павлу", "павла", "павлом", "павле"};
                     Rule(201);
                     return true;
                 }
-                else if (InNames(workingWord, "Лев"))
+                else if (InNames(workingWord, "лев"))
                 {
-                    lastResult = new String [] {"Лев", "Льва", "Льву", "Льва", "Львом", "Льве"};
+                    lastResult = new String [] {"лев", "льва", "льву", "льва", "львом", "льве"};
                     Rule(202);
                     return true;
                 }
@@ -502,7 +502,7 @@ namespace NameCaseLib
         protected override bool ManFatherName()
         {
             //Проверяем действительно ли отчество
-            if (InNames(workingWord, "Ильич"))
+            if (InNames(workingWord, "ильич"))
             {
                 WordForms(workingWord, new String [] {"а", "у", "а", "ом", "е"});
                 return true;
@@ -717,7 +717,7 @@ namespace NameCaseLib
                 }
                 
                 // Просто исключения
-                else if (InNames(name, new String [] {"Лазарь", "Игорь", "Любовь"}))
+                else if (InNames(name, new String [] {"лазарь", "игорь", "любовь"}))
                 {
                     first += 10;
                 }
@@ -748,7 +748,7 @@ namespace NameCaseLib
             }
 
             //Исключения
-            if (InNames(name, new String [] {"Лев", "Яков", "Маша", "Ольга", "Еремей", "Исак", "Исаак", "Ева", "Ирина", "Элькин", "Мерлин"}))
+            if (InNames(name, new String [] {"лев", "яков", "маша", "ольга", "еремей", "исак", "исаак", "ева", "ирина", "элькин", "мерлин"}))
             {
                 first+=10;
             }
@@ -773,7 +773,7 @@ namespace NameCaseLib
             // Фамилии на -ур кроме имен Артур Тимур
             if (Last(2) == "ур")
             {
-                if (!InNames(name, new String [] {"Артур", "Тимур"}))
+                if (!InNames(name, new String [] {"артур", "тимур"}))
                 {
                     second += 0.4f;
                 }
@@ -807,7 +807,7 @@ namespace NameCaseLib
                 }
                 
                 // Исключения
-                else if (InNames(name, new String [] {"Мальвина", "Антонина", "Альбина", "Агриппина", "Фаина", "Карина", "Марина", "Валентина", "Калина", "Аделина", "Алина", "Ангелина", "Галина", "Каролина", "Павлина", "Полина", "Элина", "Мина", "Нина"}))
+                else if (InNames(name, new String [] {"мальвина", "антонина", "альбина", "агриппина", "фаина", "карина", "марина", "валентина", "калина", "аделина", "алина", "ангелина", "галина", "каролина", "павлина", "полина", "элина", "мина", "нина"}))
                 {
                     first+=10;
                 }

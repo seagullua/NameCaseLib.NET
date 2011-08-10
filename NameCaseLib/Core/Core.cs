@@ -12,7 +12,7 @@ namespace NameCaseLib.Core
         /// <summary>
         /// Версия библиотеки
         /// </summary>
-        private static String version = "0.0.1";
+        private static String version = "0.2/0.4.1";
 
         /// <summary>
         /// Версия языкового файла
@@ -159,6 +159,29 @@ namespace NameCaseLib.Core
         }
 
         /// <summary>
+        /// Получает указаное количество букв с конца слова
+        /// </summary>
+        /// <param name="word">Слово</param>
+        /// <param name="length">Количество букв</param>
+        /// <returns>Полученая строка</returns>
+        protected String Last(String word, int length)
+        {
+            String result;
+
+            int startIndex = word.Length - length;
+            if (startIndex >= 0)
+            {
+                result = word.Substring(word.Length - length, length);
+            }
+            else
+            {
+                result = word;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Вырезает stopAfter букв начиная с length с конца
         /// </summary>
         /// <param name="length">На сколько букв нужно оступить от конца</param>
@@ -180,6 +203,30 @@ namespace NameCaseLib.Core
                 }
                 workindLastCache.Push(result, length, stopAfter);
             }
+            return result;
+        }
+
+        /// <summary>
+        /// Извлекает последние буквы из указаного слова
+        /// </summary>
+        /// <param name="word">Слово</param>
+        /// <param name="length">Сколько букв с конца</param>
+        /// <param name="stopAfter">Сколько нужно взять</param>
+        /// <returns>Полученая подстрока</returns>
+        protected String Last(String word, int length, int stopAfter)
+        {
+            String result;
+            int startIndex = word.Length - length;
+            
+            if (startIndex >= 0)
+            {
+                result = word.Substring(word.Length - length, stopAfter);
+            }
+            else
+            {
+                result = word;
+            }
+            
             return result;
         }
 
@@ -590,6 +637,7 @@ namespace NameCaseLib.Core
             else
             {
                 MakeResultTheSame();
+                word.NameCases = lastResult;
                 word.Rule = -1;
             }
         }
